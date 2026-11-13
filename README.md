@@ -79,7 +79,7 @@ O histórico guarda as **5 últimas chamadas de cada setor**. Rechamar uma senha
 | `POST` | `/api/call` | `{ desk, serviceFilter }` | Chama a próxima senha do setor (`serviceFilter` padrão: `ALL`). |
 | `POST` | `/api/recall` | `{ code, desk }` | Rechama uma senha que está no histórico. |
 | `POST` | `/api/reset` | — | Zera filas, contadores, histórico e intervalos entre chamadas. |
-| `GET` | `/api/tts?text=...` | — | Retorna um MP3 com o texto falado em português (com cache em `audio_cache/`). |
+| `GET` | `/api/tts?text=...` | — | Retorna um MP3 com o texto falado em português (com cache em `data/audio_cache/`). |
 | `GET` | `/api/info` | — | IP local, porta e URL de acesso pela rede. |
 
 Valores aceitos:
@@ -117,22 +117,34 @@ O Socket.IO também está disponível em `/socket.io` e emite o evento `stateUpd
 
 ```
 sistema-senhas/
-├── server.js        # Servidor Express + WebSocket + Socket.IO, regras de fila e TTS
-├── shared.js        # Cliente comum às telas: conexão em tempo real e chamadas à API
-├── style.css        # Estilos compartilhados
-├── index.html       # Página inicial com links para as telas
-├── totem.html       # Emissão de senhas
-├── guiche.html      # Controle dos guichês
-├── painel.html      # Painel de TV com anúncio por voz
-├── cliente.html     # Acompanhamento pelo celular
-├── images/          # Logotipo da DPE-PA
-├── data/state.json  # Estado salvo (criado automaticamente)
-└── audio_cache/     # MP3s de TTS em cache (criado automaticamente)
+├── src/                  # Servidor (Node.js)
+│   ├── server.js         # Ponto de entrada: Express, arquivos estáticos e listen
+│   ├── config.js         # Porta, caminhos e constantes (intervalo entre chamadas, tamanho do histórico)
+│   ├── state.js          # Estado das filas e persistência em data/state.json
+│   ├── queue.js          # Regras de negócio: emitir, chamar, rechamar e zerar
+│   ├── routes.js         # Rotas REST em /api
+│   ├── realtime.js       # WebSocket nativo e Socket.IO
+│   ├── tts.js            # Síntese de voz com cache
+│   └── network.js        # Descoberta do IP da rede local
+├── public/               # Tudo o que o navegador recebe
+│   ├── index.html        # Página inicial com links para as telas
+│   ├── totem.html        # Emissão de senhas
+│   ├── guiche.html       # Controle dos guichês
+│   ├── painel.html       # Painel de TV com anúncio por voz
+│   ├── cliente.html      # Acompanhamento pelo celular
+│   ├── css/              # style.css (comum) + estilos de cada tela
+│   ├── js/               # shared.js (comum) + script de cada tela
+│   └── images/           # Logotipo da DPE-PA
+└── data/                 # Gerado em execução (fora do Git)
+    ├── state.json        # Estado salvo
+    └── audio_cache/      # MP3s de TTS em cache
 ```
+
+Só a pasta `public/` é servida pelo navegador. O código do servidor e os dados em `data/` não ficam acessíveis pela rede.
 
 ## Observações
 
 - Para zerar o sistema no início do dia, use o botão no guichê ou `POST /api/reset`. Também dá para parar o servidor e apagar `data/state.json`.
-- `audio_cache/` pode ser apagado a qualquer momento; os áudios são gerados de novo quando necessário.
-- `data/` e `audio_cache/` são gerados durante a execução e ficam fora do Git (veja `.gitignore`).
+- `data/audio_cache/` pode ser apagado a qualquer momento; os áudios são gerados de novo quando necessário.
+- `data/` é gerado durante a execução e fica fora do Git (veja `.gitignore`).
 - A API não tem autenticação. Use o sistema apenas em rede interna confiável.

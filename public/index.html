@@ -7,21 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <style>
-        a.option-btn { text-decoration: none; }
-        .network-hint {
-            margin-top: 8px;
-            text-align: center;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
-        .network-hint code {
-            font-family: 'Space Mono', monospace;
-            color: var(--dpe-green);
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
 
@@ -82,23 +69,6 @@
         </section>
     </main>
 
-    <script>
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock-time').innerText = now.toLocaleTimeString('pt-BR');
-            document.getElementById('clock-date').innerText = now.toLocaleDateString('pt-BR');
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        fetch('/api/info')
-            .then(res => res.ok ? res.json() : null)
-            .then(info => {
-                if (!info || !info.networkUrl) return;
-                document.getElementById('network-url').innerText = info.networkUrl;
-                document.getElementById('network-hint').hidden = false;
-            })
-            .catch(() => {});
-    </script>
+    <script src="js/index.js"></script>
 </body>
 </html>

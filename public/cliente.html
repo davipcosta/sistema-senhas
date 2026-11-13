@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Acompanhamento de Senha - DPE-PA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/cliente.css">
+</head>
+<body>
+
+    <header class="mobile-header">
+        <div class="brand-box">
+            <img src="images/dpepa.svg" alt="DPE-PA">
+            <div class="brand-text">
+                Defensoria Pública
+                <span>Estado do Pará</span>
+            </div>
+        </div>
+        <div class="live-badge">
+            <div class="live-dot"></div>
+            <span>AO VIVO</span>
+        </div>
+    </header>
+
+    <main class="mobile-container">
+
+        <!-- FORMULÁRIO DE DIGITAÇÃO DE SENHA -->
+        <section class="search-box" id="form-search" style="display: none;">
+            <div style="font-size: 1.1rem; font-weight: 800; color: #1E293B;">Acompanhar Atendimento</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+                Digite o código da sua senha para acompanhar:
+            </p>
+            <div class="search-row">
+                <input type="text" id="input-ticket" class="search-input" placeholder="Ex: CRIM-001" maxlength="10">
+                <button class="search-btn" onclick="buscarManualmente()">BUSCAR</button>
+            </div>
+        </section>
+
+        <!-- CARD DA SENHA DO USUÁRIO -->
+        <section class="ticket-card" id="card-my-ticket" style="display: none;">
+            <div class="ticket-card-label">Sua Senha</div>
+            <div class="ticket-card-code" id="lbl-my-code">---</div>
+            <div class="ticket-card-service" id="lbl-my-service">---</div>
+            <div id="lbl-my-badge"></div>
+        </section>
+
+        <!-- CARD DE STATUS EM TEMPO REAL -->
+        <section class="status-box status-waiting" id="card-status" style="display: none;">
+            <div id="status-icon" style="font-size: 2rem;">⏳</div>
+            <div id="status-title" style="font-size: 1.15rem; font-weight: 800; margin-top: 4px;">Aguardando Chamada</div>
+            <div id="status-content">
+                <div class="status-num" id="status-count">0</div>
+                <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted);" id="status-desc">
+                    Pessoas aguardando na sua frente
+                </div>
+            </div>
+        </section>
+
+        <!-- CARD DE CHAMADA ATUAL NA TV -->
+        <section class="live-tv-box">
+            <div>
+                <div class="live-tv-title">Chamando agora na TV</div>
+                <div class="live-tv-ticket" id="tv-code">---</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;" id="tv-service">Aguardando chamada...</div>
+            </div>
+            <div class="live-tv-desk" id="tv-desk">Guichê --</div>
+        </section>
+
+        <!-- AVISOS INSTITUCIONAIS -->
+        <section class="info-card">
+            <strong style="color: #1E293B; display: block; margin-bottom: 4px;">ℹ️ Dicas de Atendimento:</strong>
+            • Tenha em mãos seus documentos originais com foto.<br>
+            • Fique atento aos chamados de voz no salão de espera.
+        </section>
+
+    </main>
+
+    <!-- Scripts do Socket.IO e compartilhado -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/shared.js"></script>
+    <script src="js/cliente.js"></script>
+</body>
+</html>
