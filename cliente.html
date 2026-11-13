@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Acompanhamento de Senha - DPE-PA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --dpe-green: #006837;
+            --dpe-green-dark: #004825;
+            --dpe-green-light: #008744;
+            --dpe-gold: #C28E00;
+            --dpe-gold-light: #D97706;
+            --dpe-red: #DC2626;
+            --bg-page: #F0F4F2;
+            --surface-white: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --border-ui: #E2E8F0;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Topbar Mobile */
+        .mobile-header {
+            width: 100%;
+            background: #071D12;
+            background-image: radial-gradient(circle at 100% 0%, rgba(0, 104, 55, 0.4) 0%, transparent 70%);
+            border-bottom: 3px solid var(--dpe-gold);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-box img {
+            height: 38px;
+            background: #fff;
+            padding: 3px 6px;
+            border-radius: 6px;
+            object-fit: contain;
+        }
+
+        .brand-text {
+            color: #FFFFFF;
+            font-size: 0.95rem;
+            font-weight: 800;
+            line-height: 1.15;
+        }
+
+        .brand-text span {
+            color: #4ADE80;
+            font-size: 0.72rem;
+            display: block;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .live-badge {
+            background: rgba(74, 222, 128, 0.15);
+            border: 1px solid rgba(74, 222, 128, 0.4);
+            color: #4ADE80;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 99px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .live-dot {
+            width: 7px;
+            height: 7px;
+            background: #4ADE80;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Container Principal */
+        .mobile-container {
+            width: 100%;
+            max-width: 440px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            flex: 1;
+        }
+
+        /* Card da Senha */
+        .ticket-card {
+            background: var(--surface-white);
+            border-radius: 20px;
+            padding: 20px 16px;
+            text-align: center;
+            border: 1px solid var(--border-ui);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+        }
+
+        .ticket-card-label {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .ticket-card-code {
+            font-size: clamp(2.6rem, 10vw, 3.4rem);
+            font-weight: 800;
+            color: var(--dpe-green);
+            line-height: 1.1;
+            margin: 6px 0;
+            letter-spacing: -1px;
+        }
+
+        .ticket-card-service {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #1E293B;
+            margin-bottom: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 99px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .badge-normal { background: #DCFCE7; color: var(--dpe-green-dark); }
+        .badge-prio   { background: #FEF3C7; color: #B45309; }
+        .badge-idoso  { background: #FEE2E2; color: #B91C1C; }
+
+        /* Card de Status Dinâmico */
+        .status-box {
+            border-radius: 20px;
+            padding: 22px 18px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+        }
+
+        .status-waiting {
+            background: #FFFFFF;
+            border: 2px solid #BBF7D0;
+            color: var(--text-main);
+        }
+
+        .status-waiting .status-num {
+            font-size: clamp(3rem, 12vw, 4.2rem);
+            font-weight: 800;
+            color: var(--dpe-green);
+            line-height: 1;
+            margin: 8px 0 4px;
+        }
+
+        .status-called {
+            background: linear-gradient(135deg, #006837 0%, #004221 100%);
+            color: #FFFFFF;
+            border: 2px solid #4ADE80;
+            animation: pulseBanner 1.2s infinite;
+        }
+
+        .status-called .called-desk {
+            font-size: clamp(2.2rem, 8vw, 3rem);
+            font-weight: 800;
+            color: #FDE047;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin: 8px 0;
+            line-height: 1.1;
+        }
+
+        @keyframes pulseBanner {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 104, 55, 0.7); }
+            50% { transform: scale(1.02); box-shadow: 0 0 25px 6px rgba(74, 222, 128, 0.5); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 104, 55, 0); }
+        }
+
+        .status-done {
+            background: #FFFFFF;
+            border: 1px solid var(--border-ui);
+            color: var(--text-muted);
+        }
+
+        /* Card do Painel Geral Ao Vivo */
+        .live-tv-box {
+            background: var(--surface-white);
+            border-radius: 16px;
+            padding: 14px 16px;
+            border: 1px solid var(--border-ui);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .live-tv-title {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+        }
+
+        .live-tv-ticket {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .live-tv-desk {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--dpe-green);
+            background: #E8F5E9;
+            padding: 6px 12px;
+            border-radius: 8px;
+        }
+
+        /* Formulário de Busca */
+        .search-box {
+            background: var(--surface-white);
+            border-radius: 18px;
+            padding: 20px 16px;
+            border: 1px solid var(--border-ui);
+            text-align: center;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 14px;
+            border: 2px solid var(--border-ui);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            outline: none;
+            text-align: center;
+        }
+
+        .search-input:focus {
+            border-color: var(--dpe-green);
+        }
+
+        .search-btn {
+            background: var(--dpe-green);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 18px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        /* Links e Botões */
+        .link-btn {
+            color: #0284C7;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: underline;
+            cursor: pointer;
+            border: none;
+            background: none;
+            margin-top: 10px;
+        }
+
+        .info-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 14px 16px;
+            border: 1px solid var(--border-ui);
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="mobile-header">
+        <div class="brand-box">
+            <img src="images/dpepa.svg" alt="DPE-PA">
+            <div class="brand-text">
+                Defensoria Pública
+                <span>Estado do Pará</span>
+            </div>
+        </div>
+        <div class="live-badge">
+            <div class="live-dot"></div>
+            <span>AO VIVO</span>
+        </div>
+    </header>
+
+    <main class="mobile-container">
+
+        <!-- FORMULÁRIO DE DIGITAÇÃO DE SENHA -->
+        <section class="search-box" id="form-search" style="display: none;">
+            <div style="font-size: 1.1rem; font-weight: 800; color: #1E293B;">Acompanhar Atendimento</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+                Digite o código da sua senha para acompanhar:
+            </p>
+            <div class="search-row">
+                <input type="text" id="input-ticket" class="search-input" placeholder="Ex: CRIM-001" maxlength="10">
+                <button class="search-btn" onclick="buscarManualmente()">BUSCAR</button>
+            </div>
+        </section>
+
+        <!-- CARD DA SENHA DO USUÁRIO -->
+        <section class="ticket-card" id="card-my-ticket" style="display: none;">
+            <div class="ticket-card-label">Sua Senha</div>
+            <div class="ticket-card-code" id="lbl-my-code">---</div>
+            <div class="ticket-card-service" id="lbl-my-service">---</div>
+            <div id="lbl-my-badge"></div>
+        </section>
+
+        <!-- CARD DE STATUS EM TEMPO REAL -->
+        <section class="status-box status-waiting" id="card-status" style="display: none;">
+            <div id="status-icon" style="font-size: 2rem;">⏳</div>
+            <div id="status-title" style="font-size: 1.15rem; font-weight: 800; margin-top: 4px;">Aguardando Chamada</div>
+            <div id="status-content">
+                <div class="status-num" id="status-count">0</div>
+                <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted);" id="status-desc">
+                    Pessoas aguardando na sua frente
+                </div>
+            </div>
+        </section>
+
+        <!-- CARD DE CHAMADA ATUAL NA TV -->
+        <section class="live-tv-box">
+            <div>
+                <div class="live-tv-title">Chamando agora na TV</div>
+                <div class="live-tv-ticket" id="tv-code">---</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;" id="tv-service">Aguardando chamada...</div>
+            </div>
+            <div class="live-tv-desk" id="tv-desk">Guichê --</div>
+        </section>
+
+        <!-- AVISOS INSTITUCIONAIS -->
+        <section class="info-card">
+            <strong style="color: #1E293B; display: block; margin-bottom: 4px;">ℹ️ Dicas de Atendimento:</strong>
+            • Tenha em mãos seus documentos originais com foto.<br>
+            • Fique atento aos chamados de voz no salão de espera.
+        </section>
+
+    </main>
+
+    <!-- Scripts do Socket.IO e compartilhado -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="shared.js"></script>
+    <script>
+        let myTicketCode = null;
+        let jaVibrou = false;
+
+        function getParamTicket() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('ticket') || params.get('code') || params.get('id');
+        }
+
+        function buscarManualmente() {
+            const val = document.getElementById('input-ticket').value.trim().toUpperCase();
+            if (val) {
+                myTicketCode = val;
+                history.pushState(null, '', `?ticket=${encodeURIComponent(val)}`);
+                renderClient(window.serverState);
+            }
+        }
+
+        function trocarSenha() {
+            myTicketCode = null;
+            history.pushState(null, '', window.location.pathname);
+            renderClient(window.serverState);
+        }
+
+        function vibrarAparelho() {
+            try {
+                if ('vibrate' in navigator) {
+                    navigator.vibrate([400, 200, 400, 200, 400]);
+                }
+            } catch (e) {}
+        }
+
+        function renderClient(state) {
+            if (!state) return;
+
+            myTicketCode = myTicketCode || getParamTicket();
+
+            // Atualiza o painel da TV ao vivo
+            if (state.currentCall) {
+                document.getElementById('tv-code').innerText = state.currentCall.code;
+                document.getElementById('tv-service').innerText = `${state.currentCall.service || ''} (${state.currentCall.category || ''})`;
+                let d = state.currentCall.desk ? String(state.currentCall.desk).padStart(2, '0') : '01';
+                document.getElementById('tv-desk').innerText = `Guichê ${d}`;
+            } else {
+                document.getElementById('tv-code').innerText = '---';
+                document.getElementById('tv-service').innerText = 'Aguardando chamadas...';
+                document.getElementById('tv-desk').innerText = 'Guichê --';
+            }
+
+            // Se não tem senha definida, mostra o input de busca
+            if (!myTicketCode) {
+                document.getElementById('form-search').style.display = 'block';
+                document.getElementById('card-my-ticket').style.display = 'none';
+                document.getElementById('card-status').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('form-search').style.display = 'none';
+            document.getElementById('card-my-ticket').style.display = 'block';
+            document.getElementById('card-status').style.display = 'block';
+
+            document.getElementById('lbl-my-code').innerText = myTicketCode;
+
+            const currentCall = state.currentCall;
+            const history = state.history || [];
+            const queues = state.queues || { IDOSO: [], PRIORIDADE: [], NORMAL: [] };
+
+            const isCurrent = currentCall && currentCall.code === myTicketCode;
+            const inHistory = history.find(h => h.code === myTicketCode);
+
+            // Concatena todas as filas respeitando a ordem de prioridade (IDOSO -> PRIORIDADE -> NORMAL)
+            const allQueue = [
+                ...(queues.IDOSO || []),
+                ...(queues.PRIORIDADE || []),
+                ...(queues.NORMAL || [])
+            ];
+
+            // Localiza o objeto do ticket na fila completa
+            const ticketInQueue = allQueue.find(item => item.code === myTicketCode);
+            const itemTicket = ticketInQueue || (isCurrent ? currentCall : inHistory);
+
+            if (itemTicket) {
+                document.getElementById('lbl-my-service').innerText = itemTicket.service || 'Atendimento Geral';
+                const catClass = itemTicket.category === 'IDOSO' ? 'badge-idoso' :
+                                itemTicket.category === 'PRIORIDADE' ? 'badge-prio' : 'badge-normal';
+                document.getElementById('lbl-my-badge').innerHTML = `<span class="badge ${catClass}">${itemTicket.category}</span>`;
+            }
+
+            // --- FILTRAGEM DA FILA POR SERVIÇO ---
+            let peopleAheadSameService = 0;
+            let inQueue = false;
+
+            if (ticketInQueue) {
+                inQueue = true;
+                const myService = ticketInQueue.service;
+
+                // Filtra a fila completa mantendo apenas quem é do mesmo serviço
+                const serviceQueue = allQueue.filter(item => item.service === myService);
+                
+                // Posição do usuário dentro da fila específica do serviço dele
+                const serviceIndex = serviceQueue.findIndex(item => item.code === myTicketCode);
+                
+                peopleAheadSameService = serviceIndex !== -1 ? serviceIndex : 0;
+            }
+
+            const card = document.getElementById('card-status');
+            const icon = document.getElementById('status-icon');
+            const title = document.getElementById('status-title');
+            const content = document.getElementById('status-content');
+
+            card.className = 'status-box';
+
+            if (isCurrent) {
+                card.classList.add('status-called');
+                icon.innerText = '🔔';
+                title.innerText = 'SUA VEZ! DIRIJA-SE AO';
+                let deskFormat = currentCall.desk ? String(currentCall.desk).padStart(2, '0') : '01';
+                content.innerHTML = `
+                    <div class="called-desk">GUICHÊ ${deskFormat}</div>
+                    <div style="font-size: 0.95rem; font-weight: 700; color: #FFFFFF;">Compareça agora ao atendimento!</div>
+                `;
+                if (!jaVibrou) {
+                    jaVibrou = true;
+                    vibrarAparelho();
+                }
+            } else if (inQueue) {
+                card.classList.add('status-waiting');
+                icon.innerText = '⏳';
+                title.innerText = 'Aguardando na Fila';
+                content.innerHTML = `
+                    <div class="status-num">${peopleAheadSameService}</div>
+                    <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted);">
+                        ${peopleAheadSameService === 0 
+                            ? 'Você é o próximo a ser chamado para este serviço!' 
+                            : 'Pessoa(s) aguardando na sua frente para este serviço'}
+                    </div>
+                `;
+            } else if (inHistory) {
+                card.classList.add('status-done');
+                icon.innerText = '✅';
+                title.innerText = 'Atendimento Concluído';
+                let d = inHistory.desk ? String(inHistory.desk).padStart(2, '0') : '--';
+                content.innerHTML = `
+                    <div style="font-size: 1.15rem; font-weight: 800; color: #1E293B; margin: 10px 0 4px;">Chamado no Guichê ${d}</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Se não foi atendido, solicite rechamada no guichê.</div>
+                `;
+            } else {
+                card.classList.add('status-done');
+                icon.innerText = '❓';
+                title.innerText = 'Senha não localizada';
+                content.innerHTML = `
+                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 8px;">
+                        Verifique se o código foi digitado corretamente.
+                    </div>
+                `;
+            }
+        }
+
+        function updateUI(state) {
+            renderClient(state);
+        }
+
+        async function init() {
+            const data = await getData();
+            renderClient(data);
+        }
+        init();
+    </script>
+</body>
+</html>

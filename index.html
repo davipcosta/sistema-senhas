@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Senhas - DPE-PA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        a.option-btn { text-decoration: none; }
+        .network-hint {
+            margin-top: 8px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .network-hint code {
+            font-family: 'Space Mono', monospace;
+            color: var(--dpe-green);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="brand-container">
+            <img src="images/dpepa.svg" alt="Logo DPE-PA" class="brand-logo">
+            <div class="brand-title">
+                Defensoria Pública
+                <span>Estado do Pará</span>
+            </div>
+        </div>
+        <nav class="topnav-links">
+            <a href="totem.html" class="nav-link">Totem</a>
+            <a href="guiche.html" class="nav-link">Guichê</a>
+            <a href="painel.html" class="nav-link">Painel</a>
+        </nav>
+        <div class="clock-container">
+            <span id="clock-time" class="clock-badge">00:00:00</span>
+            <span id="clock-date">00/00/0000</span>
+        </div>
+    </header>
+
+    <main class="main-container-form">
+        <section>
+            <div class="header-title">
+                <span class="eyebrow">Sistema de Senhas</span>
+                <h1>Escolha a tela deste dispositivo</h1>
+            </div>
+
+            <div class="card">
+                <div class="options-grid">
+                    <a class="option-btn" href="totem.html">
+                        <span style="font-size: 1.8rem;">🎫</span>
+                        <span>Totem</span>
+                        <small style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Emissão de senhas para o público</small>
+                    </a>
+                    <a class="option-btn" href="guiche.html">
+                        <span style="font-size: 1.8rem;">🧑‍💼</span>
+                        <span>Guichê</span>
+                        <small style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Chamar e rechamar senhas</small>
+                    </a>
+                    <a class="option-btn" href="painel.html">
+                        <span style="font-size: 1.8rem;">📺</span>
+                        <span>Painel</span>
+                        <small style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">TV da sala de espera com voz</small>
+                    </a>
+                    <a class="option-btn" href="cliente.html">
+                        <span style="font-size: 1.8rem;">📱</span>
+                        <span>Acompanhar senha</span>
+                        <small style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Ver a posição na fila pelo celular</small>
+                    </a>
+                </div>
+
+                <p class="network-hint" id="network-hint" hidden>
+                    Acesso pela rede local: <code id="network-url"></code>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock-time').innerText = now.toLocaleTimeString('pt-BR');
+            document.getElementById('clock-date').innerText = now.toLocaleDateString('pt-BR');
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        fetch('/api/info')
+            .then(res => res.ok ? res.json() : null)
+            .then(info => {
+                if (!info || !info.networkUrl) return;
+                document.getElementById('network-url').innerText = info.networkUrl;
+                document.getElementById('network-hint').hidden = false;
+            })
+            .catch(() => {});
+    </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+# Dependências
+node_modules/
+
+# Dados gerados em execução
+data/
+audio_cache/
+*.db
+
+# Logs
+npm-debug.log*
+*.log
+
+# Ambiente
+.env
+.env.*
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

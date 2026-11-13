@@ -1,0 +1,935 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@700&display=swap');
+
+:root {
+    /* Paleta Oficial DPE-PA (Defensoria Pública do Estado do Pará) */
+    --dpe-green: #006837;
+    --dpe-green-dark: #004825;
+    --dpe-green-light: #008744;
+    --dpe-green-glow: rgba(0, 104, 55, 0.25);
+    
+    --dpe-gold: #C28E00;
+    --dpe-gold-light: #F59E0B;
+    --dpe-gold-glow: rgba(194, 142, 0, 0.25);
+    
+    --dpe-blue: #0284C7;
+    --dpe-blue-dark: #0369A1;
+    
+    --dpe-red: #DC2626;
+    --dpe-red-dark: #991B1B;
+    
+    /* Superfícies e Escuros Institucionais */
+    --dpe-dark-header: #071D12;
+    --dpe-dark-surface: #0E2E1F;
+    --dpe-dark-border: #16432E;
+    
+    /* Gradientes Oficiais */
+    --gradient-dpe: linear-gradient(135deg, #006837 0%, #004221 100%);
+    --gradient-dpe-light: linear-gradient(135deg, #008744 0%, #00592E 100%);
+    --gradient-normal: linear-gradient(135deg, #006837 0%, #004825 100%);
+    --gradient-prio: linear-gradient(135deg, #D97706 0%, #92400E 100%);
+    --gradient-idoso: linear-gradient(135deg, #B91C1C 0%, #7F1D1D 100%);
+    --gradient-card-tv: linear-gradient(145deg, #005A2F 0%, #00361A 100%);
+    
+    /* Cores de Interface */
+    --bg-main: #F4F7F5;
+    --surface-white: #FFFFFF;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #64748B;
+    --border-color: #E2E8F0;
+    --border-light: #F1F5F9;
+    
+    /* Sombras e Elevações */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04);
+    --shadow-card: 0 10px 25px -5px rgba(7, 29, 18, 0.06), 0 8px 10px -6px rgba(7, 29, 18, 0.04);
+    --shadow-lg: 0 20px 30px -10px rgba(0, 104, 55, 0.25);
+    --shadow-prio: 0 20px 30px -10px rgba(217, 119, 6, 0.3);
+    --shadow-idoso: 0 20px 30px -10px rgba(185, 28, 28, 0.3);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--bg-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   TOPBAR INSTITUCIONAL DPE-PA
+   ========================================================================== */
+.topbar {
+    background-color: var(--dpe-dark-header);
+    background-image: radial-gradient(circle at 100% 0%, rgba(0, 104, 55, 0.25) 0%, transparent 60%);
+    color: #FFFFFF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    border-bottom: 3px solid var(--dpe-gold);
+    z-index: 50;
+    position: relative;
+}
+
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+}
+
+.brand-logo {
+    height: 80px;
+    width: auto;
+    background: var(--dpe-green);
+    padding: 6px 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    object-fit: contain;
+}
+
+.brand-title {
+    color: #FFFFFF;
+    font-size: 1.1rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.2px;
+}
+
+.brand-title span {
+    color: #4ADE80;
+    font-size: 0.82rem;
+    display: block;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.topnav-links {
+    display: flex;
+    gap: 6px;
+    background: rgba(14, 46, 31, 0.8);
+    padding: 10px;
+    border-radius: 99px;
+    border: 1px solid var(--dpe-dark-border);
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #A7F3D0;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 7px 18px;
+    border-radius: 99px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-link.active {
+    background: var(--dpe-green);
+    color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0, 104, 55, 0.4);
+}
+
+.clock-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.95rem;
+    color: #ECFDF5;
+    font-weight: 700;
+}
+
+.clock-badge {
+    background: rgba(0, 104, 55, 0.5);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    padding: 6px 14px;
+    border-radius: 8px;
+    letter-spacing: 1px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.05rem;
+    color: #FFFFFF;
+}
+
+/* ==========================================================================
+   CARDS & CONTAINERS GERAIS
+   ========================================================================== */
+.header-title {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.header-title .eyebrow {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--dpe-green);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    background: #E8F5E9;
+    padding: 4px 12px;
+    border-radius: 99px;
+}
+
+.header-title h1 {
+    font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+    font-weight: 800;
+    color: var(--dpe-dark-header);
+    letter-spacing: -0.5px;
+}
+
+.card {
+    background: var(--surface-white);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.25s ease;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--dpe-dark-header);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ==========================================================================
+   PAINEL DE CHAMADA (TV)
+   ========================================================================== */
+
+.btn-fullscreen:hover {
+    background: var(--dpe-green);
+    border-color: #4ADE80;
+    transform: translateY(-1px);
+}
+
+/* Rodapé de Avisos / Letreiro Digital (TV) */
+.panel-ticker-footer {
+    display: flex;
+    align-items: center;
+    background: var(--dpe-dark-header);
+    border-top: 2px solid var(--dpe-gold);
+    color: #FFFFFF;
+    height: 48px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.ticker-label {
+    background: var(--dpe-green);
+    color: #FFFFFF;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 0 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    border-right: 2px solid var(--dpe-gold);
+}
+
+.ticker-content-wrapper {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
+.ticker-text {
+    display: inline-flex;
+    gap: 50px;
+    animation: marquee 55s linear infinite;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #E2E8F0;
+}
+
+.ticker-text span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ticker-text strong {
+    color: #4ADE80;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+.main-container-panel {
+    display: grid;
+    grid-template-columns: 2.3fr 1fr;
+    gap: 24px;
+    padding: 20px 24px 68px 24px;
+    height: calc(100vh - 100px);
+    max-width: 1920px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.current-call-box {
+    color: #FFFFFF;
+    border-radius: 28px;
+    padding: 44px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--gradient-normal);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Cores do Card de Chamada por Categoria */
+.current-call-box.call-normal {
+    background: var(--gradient-normal);
+    box-shadow: var(--shadow-lg);
+}
+
+.current-call-box.call-prio {
+    background: var(--gradient-prio);
+    box-shadow: var(--shadow-prio);
+}
+
+.current-call-box.call-idoso {
+    background: var(--gradient-idoso);
+    box-shadow: var(--shadow-idoso);
+}
+
+/* Efeito D'água no Fundo */
+.current-call-box::before {
+    content: '';
+    position: absolute;
+    right: -60px;
+    bottom: -60px;
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.label-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 8px;
+}
+
+.ticket-number {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(6.5rem, 11vw, 11rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -2px;
+    color: #FFFFFF;
+    text-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    margin-bottom: 24px;
+}
+
+.ticket-category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 24px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.desk-container {
+    border-top: 2px solid rgba(255, 255, 255, 0.25);
+    padding-top: 28px;
+    display: flex;
+    flex-direction: column;
+}
+
+.desk-number {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(4.5rem, 7vw, 6.5rem);
+    font-weight: 800;
+    line-height: 1;
+    color: #FFFFFF;
+    text-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.pulse-animation {
+    animation: callGlow 1.2s ease-in-out 3;
+}
+
+@keyframes callGlow {
+    0% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.02); filter: brightness(1.2); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* Histórico Lateral (Painel TV) */
+.history-box {
+    background: var(--surface-white);
+    border: 1px solid var(--border-color);
+    border-radius: 28px;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-card);
+    height: 100%;
+}
+
+.history-title {
+    color: var(--dpe-green);
+    font-size: 1.35rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.history-title::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 22px;
+    background: var(--dpe-gold);
+    border-radius: 4px;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 0.88rem;
+    letter-spacing: 1px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--bg-main);
+    margin-bottom: 14px;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-main);
+    padding: 16px 20px;
+    border-radius: 16px;
+    color: var(--text-primary);
+    border-left: 5px solid var(--dpe-green);
+    transition: transform 0.2s ease;
+}
+
+.history-item.item-prio { border-left-color: var(--dpe-gold); }
+.history-item.item-idoso { border-left-color: var(--dpe-red); }
+
+.history-item .ticket-code {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--dpe-dark-header);
+}
+
+.history-item .desk-code {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--dpe-green);
+    background: #E8F5E9;
+    padding: 6px 14px;
+    border-radius: 10px;
+}
+
+/* ==========================================================================
+   ÁREA DO GUICHÊ (ATENDENTE)
+   ========================================================================== */
+.main-container-form {
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 28px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.queue-counts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    text-align: center;
+}
+
+.count-card {
+    background: var(--bg-main);
+    border: 2px solid var(--border-color);
+    padding: 18px 12px;
+    border-radius: 18px;
+    transition: transform 0.2s ease;
+}
+
+.count-card:hover {
+    transform: translateY(-2px);
+}
+
+.count-label {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.count-card strong {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    display: block;
+    line-height: 1;
+    font-weight: 700;
+}
+
+.count-idoso strong { color: var(--dpe-red); }
+.count-prio strong  { color: var(--dpe-gold); }
+.count-normal strong { color: var(--dpe-green); }
+
+.service-selector {
+    margin: 0 0 20px;
+    padding: 18px;
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
+    border-radius: 18px;
+}
+
+.service-selector-label {
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--dpe-green-dark);
+    margin-bottom: 12px;
+}
+
+.service-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.sector-btn {
+    border: 1px solid #CBD5E1;
+    background: #FFFFFF;
+    color: var(--text-primary);
+    padding: 11px 18px;
+    border-radius: 12px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sector-btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--dpe-green);
+}
+
+.sector-btn.active {
+    background: var(--dpe-green);
+    border-color: var(--dpe-green);
+    color: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(0, 104, 55, 0.25);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.field-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+select {
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-size: 1.05rem;
+    font-weight: 700;
+    outline: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+select:focus {
+    border-color: var(--dpe-green);
+    background-color: var(--surface-white);
+    box-shadow: 0 0 0 4px var(--dpe-green-glow);
+}
+
+.btn-call {
+    width: 100%;
+    background: var(--gradient-dpe);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 16px;
+    padding: 20px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-call:hover:not(:disabled) {
+    opacity: 0.95;
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(0, 104, 55, 0.35);
+}
+
+.btn-call:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-call:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    filter: grayscale(0.2);
+}
+
+.call-status {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: #FFFBEB;
+    color: #92400E;
+    border: 1px solid #FDE68A;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.last-called-box {
+    margin-top: 20px;
+    padding: 18px 16px;
+    background: #F0FDF4;
+    border: 2px solid #BBF7D0;
+    border-radius: 16px;
+    text-align: center;
+}
+
+.last-called-box .lbl {
+    font-size: 0.82rem;
+    color: var(--dpe-green-dark);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.last-called-box .val {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.1rem, 3.5vw, 1.45rem);
+    color: var(--dpe-dark-header);
+    margin-top: 6px;
+}
+
+/* Tabela de Histórico no Guichê */
+.history-row {
+    display: grid;
+    grid-template-columns: 0.8fr 1fr 1.6fr 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--bg-main);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.history-row .history-cell {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.history-row .code-cell {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    color: var(--dpe-green-dark);
+    font-size: 1.05rem;
+}
+
+.btn-recall {
+    background-color: var(--dpe-blue);
+    color: #FFFFFF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-recall:hover:not(:disabled) {
+    background-color: var(--dpe-blue-dark);
+    transform: translateY(-1px);
+}
+
+.btn-reset {
+    background: #DC2626;
+    color: #FFFFFF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+}
+
+.btn-reset:hover {
+    background: #B91C1C;
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   TOTEM DE AUTOATENDIMENTO
+   ========================================================================== */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.option-btn {
+    background-color: var(--bg-main);
+    border: 2px solid var(--border-color);
+    border-radius: 20px;
+    padding: 24px 20px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--dpe-dark-header);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.option-btn:hover {
+    border-color: var(--dpe-green);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 104, 55, 0.12);
+}
+
+.option-btn.selected {
+    background-color: #ECFDF5;
+    border-color: var(--dpe-green);
+    color: var(--dpe-green);
+    box-shadow: 0 6px 18px rgba(0, 104, 55, 0.15);
+}
+
+.btn-submit {
+    width: 100%;
+    background: var(--gradient-dpe);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 18px;
+    padding: 20px;
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-submit:hover {
+    opacity: 0.95;
+    transform: translateY(-2px);
+}
+
+/* Ticket Impresso / Stub do Totem */
+.ticket-stub {
+    background: var(--surface-white);
+    color: var(--text-primary);
+    padding: 36px 32px;
+    border-radius: 24px;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 25px 50px -12px rgba(7, 29, 18, 0.25);
+    border: 2px solid #E2E8F0;
+    position: relative;
+}
+
+.stub-header-logo {
+    height: 48px;
+    margin-bottom: 12px;
+}
+
+.stub-eyebrow {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.stub-code {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 3.8rem;
+    font-weight: 700;
+    color: var(--dpe-green);
+    margin: 10px 0;
+    line-height: 1;
+}
+
+.perforation {
+    border-top: 2px dashed #CBD5E1;
+    margin: 20px -32px;
+}
+
+.stub-service {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--dpe-dark-header);
+    margin-bottom: 8px;
+}
+
+.stub-footer {
+    margin-top: 16px;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+/* Badges de Categoria */
+.badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 99px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.badge-normal { background: #DCFCE7; color: var(--dpe-green-dark); }
+.badge-prio   { background: #FEF3C7; color: #B45309; }
+.badge-idoso  { background: #FEE2E2; color: #B91C1C; }
+
+/* ==========================================================================
+   RESPONSIVIDADE (SMART TV, DESKTOP, MOBILE)
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .main-container-panel {
+        grid-template-columns: 1fr;
+        height: auto;
+        padding: 16px;
+    }
+    
+    .ticket-number { font-size: clamp(5rem, 14vw, 8rem); }
+    .desk-number { font-size: clamp(3.5rem, 9vw, 5rem); }
+    
+    .topbar {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 640px) {
+    .topbar {
+        padding: 10px 14px;
+    }
+    
+    .brand-logo {
+        height: 40px;
+    }
+    
+    .brand-title {
+        font-size: 0.95rem;
+    }
+    
+    .main-container-form {
+        padding: 16px 12px;
+    }
+    
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .history-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .history-row .action-cell {
+        grid-column: 1 / -1;
+    }
+}

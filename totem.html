@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Totem de Atendimento - DPE-PA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="brand-container">
+            <img src="images/dpepa.svg" alt="Logo DPE-PA" class="brand-logo">
+            <div class="brand-title">
+                Defensoria Pública
+                <span>Estado do Pará</span>
+            </div>
+        </div>
+        <nav class="topnav-links">
+            <a href="totem.html" class="nav-link active">Totem</a>
+            <a href="guiche.html" class="nav-link">Guichê</a>
+            <a href="painel.html" class="nav-link">Painel</a>
+        </nav>
+        <div class="clock-container">
+            <span id="clock-time" class="clock-badge">00:00:00</span>
+            <span id="clock-date">00/00/0000</span>
+        </div>
+    </header>
+
+    <main class="main-container-form">
+        
+        <!-- PASSO 1: Selecionar Serviço -->
+        <section id="step-1">
+            <div class="header-title">
+                <span class="eyebrow">Passo 1 de 2</span>
+                <h1>Selecione o Serviço Desejado</h1>
+            </div>
+
+            <div class="card">
+                <div class="options-grid">
+                    <div class="option-btn" onclick="selectService('Vara Criminal')">
+                        <span style="font-size: 1.8rem;">⚖️</span>
+                        <span>Vara Criminal</span>
+                        <small style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Processos criminais e defesa</small>
+                    </div>
+                    <div class="option-btn" onclick="selectService('Família')">
+                        <span style="font-size: 1.8rem;">👨‍👩‍👧‍👦</span>
+                        <span>Família</span>
+                        <small style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Pensão, guarda, divórcio</small>
+                    </div>
+                    <div class="option-btn" onclick="selectService('Execução Penal')">
+                        <span style="font-size: 1.8rem;">📑</span>
+                        <span>Execução Penal</span>
+                        <small style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Cumprimento de penas e benefícios</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PASSO 2: Selecionar Tipo de Atendimento -->
+        <section id="step-2" style="display: none;">
+            <div class="header-title">
+                <span class="eyebrow">Passo 2 de 2</span>
+                <h1>Tipo de Atendimento</h1>
+            </div>
+
+            <div class="card">
+                <div class="options-grid" id="category-options">
+                    <div class="option-btn selected" onclick="selectCategory('NORMAL', this)">
+                        <span style="font-size: 1.8rem;">👤</span>
+                        <span>Normal</span>
+                        <small style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Atendimento geral</small>
+                    </div>
+                    <div class="option-btn" onclick="selectCategory('PRIORIDADE', this)">
+                        <span style="font-size: 1.8rem;">♿</span>
+                        <span>Prioridade Legal</span>
+                        <small style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Gestantes, lactantes, PCD, 60+</small>
+                    </div>
+                    <div class="option-btn" onclick="selectCategory('IDOSO', this)">
+                        <span style="font-size: 1.8rem;">🧓</span>
+                        <span>Idoso (80+)</span>
+                        <small style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Prioridade especial por lei</small>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 14px; margin-top: 24px;">
+                    <button class="btn-back" style="flex: 1;" onclick="resetFlow()">
+                        VOLTAR
+                    </button>
+                    <button class="btn-submit" style="flex: 2;" onclick="confirmAndGenerate()">
+                        EMITIR SENHA
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TELA FINAL: Ticket Gerado -->
+        <section id="step-ticket" style="display: none;">
+            <div class="ticket-stub" style="margin: 0 auto;">
+                <img src="images/dpepa.svg" alt="DPE-PA" class="stub-header-logo">
+                <div class="stub-eyebrow">Sua Senha de Atendimento</div>
+                <div class="stub-code" id="modal-ticket-code">---</div>
+                <div class="perforation"></div>
+                <div class="stub-service" id="modal-service">---</div>
+                <div id="modal-badge"></div>
+
+                <!-- QR Code para Acompanhamento no Celular -->
+                <div style="margin-top: 16px;">
+                    <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 12px; border-radius: 14px; display: inline-block;">
+                        <div id="ticket-qrcode" style="display: flex; justify-content: center;"></div>
+                        <img id="ticket-qrcode-fallback" style="display: none; width: 120px; height: 120px; margin: 0 auto;" alt="QR Code Celular">
+                        <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); margin-top: 6px;">
+                            📱 Aponte a câmera para acompanhar
+                        </div>
+                    </div>
+                    <div style="margin-top: 8px;">
+                        <a id="link-cliente-direto" href="#" target="_blank" style="font-size: 0.82rem; color: var(--dpe-green); font-weight: 700; text-decoration: underline;">
+                            Abrir acompanhamento no navegador ↗
+                        </a>
+                    </div>
+                </div>
+
+                <p class="stub-footer">Por favor, retire sua senha e aguarde a chamada no painel de TV.</p>
+            </div>
+            
+            <button class="btn-submit" style="margin-top: 24px; max-width: 400px; margin-left: auto; margin-right: auto; display: block;" onclick="resetFlow()">
+                CONCLUIR / NOVO ATENDIMENTO
+            </button>
+        </section>
+
+    </main>
+
+    <!-- Script do QRCode Generator -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Scripts do Socket.IO e compartilhado -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="shared.js"></script>
+    <script>
+        // Relógio no topo da tela
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock-time').innerText = now.toLocaleTimeString('pt-BR');
+            document.getElementById('clock-date').innerText = now.toLocaleDateString('pt-BR');
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+        
+        let selectedService = '';
+        let selectedCategory = 'NORMAL';
+        let resetTimer = null;
+        let serverInfo = null;
+
+        // Obtém o IP da rede local fornecido pelo servidor
+        async function fetchServerInfo() {
+            try {
+                const res = await fetch('/api/info');
+                if (res.ok) {
+                    serverInfo = await res.json();
+                }
+            } catch (e) {
+                console.warn('Não foi possível obter informações de rede do servidor:', e);
+            }
+        }
+        fetchServerInfo();
+
+        function getBaseUrlForClient() {
+            if (serverInfo && serverInfo.networkUrl) {
+                // Se o totem foi aberto via localhost, usa o IP da rede local para que o celular consiga acessar
+                if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                    return serverInfo.networkUrl;
+                }
+            }
+            return window.location.origin;
+        }
+
+        function renderQRCode(url) {
+            const qrDiv = document.getElementById('ticket-qrcode');
+            const qrFallback = document.getElementById('ticket-qrcode-fallback');
+            qrDiv.innerHTML = '';
+
+            if (typeof QRCode !== 'undefined') {
+                try {
+                    new QRCode(qrDiv, {
+                        text: url,
+                        width: 120,
+                        height: 120,
+                        colorDark: '#004825',
+                        colorLight: '#ffffff',
+                        correctLevel: QRCode.CorrectLevel.M
+                    });
+                    qrDiv.style.display = 'flex';
+                    qrFallback.style.display = 'none';
+                    return;
+                } catch (e) {
+                    console.warn('Erro ao gerar via QRCode.js, usando fallback:', e);
+                }
+            }
+
+            qrDiv.style.display = 'none';
+            qrFallback.style.display = 'block';
+            qrFallback.src = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(url)}`;
+        }
+
+        function selectService(service) {
+            selectedService = service;
+            document.getElementById('step-1').style.display = 'none';
+            document.getElementById('step-2').style.display = 'block';
+        }
+
+        function selectCategory(category, element) {
+            selectedCategory = category;
+            document.querySelectorAll('#category-options .option-btn').forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        async function confirmAndGenerate() {
+            const ticket = await generateTicket(selectedService, selectedCategory);
+            
+            if (!ticket) return;
+
+            document.getElementById('modal-ticket-code').innerText = ticket.code;
+            document.getElementById('modal-service').innerText = ticket.service;
+
+            const badgeMap = {
+                'IDOSO': '<span class="badge badge-idoso" style="display:inline-block; margin-top:8px;">IDOSO (80+)</span>',
+                'PRIORIDADE': '<span class="badge badge-prio" style="display:inline-block; margin-top:8px;">PRIORIDADE</span>',
+                'NORMAL': '<span class="badge badge-normal" style="display:inline-block; margin-top:8px;">NORMAL</span>'
+            };
+            document.getElementById('modal-badge').innerHTML = badgeMap[ticket.category] || '';
+
+            // Gera QR Code com URL alcançável pelo celular na rede local (Wi-Fi)
+            const baseUrl = getBaseUrlForClient();
+            const clientUrl = `${baseUrl}/cliente.html?ticket=${encodeURIComponent(ticket.code)}`;
+            renderQRCode(clientUrl);
+            const directLink = document.getElementById('link-cliente-direto');
+            directLink.href = clientUrl;
+
+            document.getElementById('step-2').style.display = 'none';
+            document.getElementById('step-ticket').style.display = 'block';
+
+            resetTimer = setTimeout(resetFlow, 10000);
+        }
+
+        function resetFlow() {
+            if (resetTimer) clearTimeout(resetTimer);
+            selectedService = '';
+            selectedCategory = 'NORMAL';
+            
+            const categoryButtons = document.querySelectorAll('#category-options .option-btn');
+            categoryButtons.forEach(btn => btn.classList.remove('selected'));
+            if (categoryButtons[0]) categoryButtons[0].classList.add('selected');
+
+            document.getElementById('step-ticket').style.display = 'none';
+            document.getElementById('step-2').style.display = 'none';
+            document.getElementById('step-1').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
