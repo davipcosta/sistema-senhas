@@ -2,21 +2,25 @@
   "name": "sistema-senhas",
   "version": "1.0.0",
   "description": "Sistema de gerenciamento de filas e chamada de senhas da DPE-PA",
-  "main": "src/server.js",
+  "main": "server.js",
   "dependencies": {
-    "express": "^4.22.2",
     "google-tts-api": "^2.0.2",
+    "next": "^16.4.6",
+    "qrcode": "^1.5.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "socket.io": "^4.8.3",
     "ws": "^8.21.3"
   },
   "scripts": {
-    "start": "node src/server.js"
+    "dev": "node server.js --dev",
+    "build": "next build",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "engines": {
-    "node": ">=18"
+    "node": ">=20.9"
   }
 }

@@ -1,0 +1,269 @@
+/* ==========================================================================
+   ÁREA DO GUICHÊ (ATENDENTE)
+   ========================================================================== */
+.queueCounts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    text-align: center;
+}
+
+.countCard {
+    background: var(--bg-main);
+    border: 2px solid var(--border-color);
+    padding: 18px 12px;
+    border-radius: 18px;
+    transition: transform 0.2s ease;
+}
+
+.countCard:hover {
+    transform: translateY(-2px);
+}
+
+.countLabel {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.countCard strong {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    display: block;
+    line-height: 1;
+    font-weight: 700;
+}
+
+.countIdoso strong { color: var(--dpe-red); }
+.countPrio strong  { color: var(--dpe-gold); }
+.countNormal strong { color: var(--dpe-green); }
+
+.serviceSelector {
+    margin: 0 0 20px;
+    padding: 18px;
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
+    border-radius: 18px;
+}
+
+.serviceSelectorLabel {
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--dpe-green-dark);
+    margin-bottom: 12px;
+}
+
+.serviceOptions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.sectorBtn {
+    border: 1px solid #CBD5E1;
+    background: #FFFFFF;
+    color: var(--text-primary);
+    padding: 11px 18px;
+    border-radius: 12px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sectorBtn:hover {
+    transform: translateY(-1px);
+    border-color: var(--dpe-green);
+}
+
+.sectorBtn.active {
+    background: var(--dpe-green);
+    border-color: var(--dpe-green);
+    color: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(0, 104, 55, 0.25);
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.fieldBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.fieldBlock label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.fieldBlock select {
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-size: 1.05rem;
+    font-weight: 700;
+    outline: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.fieldBlock select:focus {
+    border-color: var(--dpe-green);
+    background-color: var(--surface-white);
+    box-shadow: 0 0 0 4px var(--dpe-green-glow);
+}
+
+.btnCall {
+    width: 100%;
+    background: var(--gradient-dpe);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 16px;
+    padding: 20px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btnCall:hover:not(:disabled) {
+    opacity: 0.95;
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(0, 104, 55, 0.35);
+}
+
+.btnCall:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btnCall:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    filter: grayscale(0.2);
+}
+
+.callStatus {
+    display: none;
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: #FFFBEB;
+    color: #92400E;
+    border: 1px solid #FDE68A;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.lastCalledBox {
+    margin-top: 20px;
+    padding: 18px 16px;
+    background: #F0FDF4;
+    border: 2px solid #BBF7D0;
+    border-radius: 16px;
+    text-align: center;
+}
+
+.lastCalledBox .lbl {
+    font-size: 0.82rem;
+    color: var(--dpe-green-dark);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.lastCalledBox .val {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.1rem, 3.5vw, 1.45rem);
+    color: var(--dpe-dark-header);
+    margin-top: 6px;
+}
+
+/* Tabela de Histórico no Guichê */
+.historyRow {
+    display: grid;
+    grid-template-columns: 0.8fr 1fr 1.6fr 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--bg-main);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.historyRow .historyCell {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.historyRow .codeCell {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    color: var(--dpe-green-dark);
+    font-size: 1.05rem;
+}
+
+.btnRecall {
+    background-color: var(--dpe-blue);
+    color: #FFFFFF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btnRecall:hover:not(:disabled) {
+    background-color: var(--dpe-blue-dark);
+    transform: translateY(-1px);
+}
+
+.btnReset {
+    background: #DC2626;
+    color: #FFFFFF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+}
+
+.btnReset:hover {
+    background: #B91C1C;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+    .historyRow {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .historyRow .actionCell {
+        grid-column: 1 / -1;
+    }
+}

@@ -1,0 +1,11 @@
+.networkHint {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+.networkHint code {
+    font-family: 'Space Mono', monospace;
+    color: var(--dpe-green);
+}

@@ -1,0 +1,313 @@
+/* ==========================================================================
+   PAINEL DE CHAMADA (TV)
+   ========================================================================== */
+
+/* Rodapé de Avisos / Letreiro Digital (TV) */
+.panelTickerFooter {
+    display: flex;
+    align-items: center;
+    background: var(--dpe-dark-header);
+    border-top: 2px solid var(--dpe-gold);
+    color: #FFFFFF;
+    height: 48px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.tickerLabel {
+    background: var(--dpe-green);
+    color: #FFFFFF;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 0 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    border-right: 2px solid var(--dpe-gold);
+}
+
+.tickerContentWrapper {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
+.tickerText {
+    display: inline-flex;
+    gap: 50px;
+    animation: marquee 55s linear infinite;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #E2E8F0;
+}
+
+.tickerText span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tickerText strong {
+    color: #4ADE80;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+.mainContainerPanel {
+    display: grid;
+    grid-template-columns: 2.3fr 1fr;
+    gap: 24px;
+    padding: 20px 24px 68px 24px;
+    height: calc(100vh - 100px);
+    max-width: 1920px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.currentCallBox {
+    color: #FFFFFF;
+    border-radius: 28px;
+    padding: 44px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--gradient-normal);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Cores do Card de Chamada por Categoria */
+.currentCallBox.callNormal {
+    background: var(--gradient-normal);
+    box-shadow: var(--shadow-lg);
+}
+
+.currentCallBox.callPrio {
+    background: var(--gradient-prio);
+    box-shadow: var(--shadow-prio);
+}
+
+.currentCallBox.callIdoso {
+    background: var(--gradient-idoso);
+    box-shadow: var(--shadow-idoso);
+}
+
+/* Efeito D'água no Fundo */
+.currentCallBox::before {
+    content: '';
+    position: absolute;
+    right: -60px;
+    bottom: -60px;
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.labelTitle {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 8px;
+}
+
+.ticketNumber {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(6.5rem, 11vw, 11rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -2px;
+    color: #FFFFFF;
+    text-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    margin-bottom: 24px;
+}
+
+.ticketCategoryBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 24px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.deskContainer {
+    border-top: 2px solid rgba(255, 255, 255, 0.25);
+    padding-top: 28px;
+    display: flex;
+    flex-direction: column;
+}
+
+.deskNumber {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(4.5rem, 7vw, 6.5rem);
+    font-weight: 800;
+    line-height: 1;
+    color: #FFFFFF;
+    text-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.pulseAnimation {
+    animation: callGlow 1.2s ease-in-out 3;
+}
+
+@keyframes callGlow {
+    0% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.02); filter: brightness(1.2); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* Histórico Lateral (Painel TV) */
+.historyBox {
+    background: var(--surface-white);
+    border: 1px solid var(--border-color);
+    border-radius: 28px;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-card);
+    height: 100%;
+}
+
+.historyTitle {
+    color: var(--dpe-green);
+    font-size: 1.35rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.historyTitle::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 22px;
+    background: var(--dpe-gold);
+    border-radius: 4px;
+}
+
+.historyHeader {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 0.88rem;
+    letter-spacing: 1px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--bg-main);
+    margin-bottom: 14px;
+}
+
+
+.historyItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-main);
+    padding: 16px 20px;
+    border-radius: 16px;
+    color: var(--text-primary);
+    border-left: 5px solid var(--dpe-green);
+    transition: transform 0.2s ease;
+}
+
+.historyItem.itemPrio { border-left-color: var(--dpe-gold); }
+.historyItem.itemIdoso { border-left-color: var(--dpe-red); }
+
+.historyItem .ticketCode {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--dpe-dark-header);
+}
+
+.historyItem .deskCode {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--dpe-green);
+    background: #E8F5E9;
+    padding: 6px 14px;
+    border-radius: 10px;
+}
+
+
+/* Seletor de Setor no Header */
+.panelSectorSelector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.panelSectorBtn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.panelSectorBtn:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.panelSectorBtn.active {
+    background: var(--dpe-green, #006837);
+    color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo destacado para a Previsão do Tempo no Rodapé */
+.weatherHighlight {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+    color: #FFD700;
+}
+
+@media (max-width: 1024px) {
+    .mainContainerPanel {
+        grid-template-columns: 1fr;
+        height: auto;
+        padding: 16px;
+    }
+
+    .ticketNumber { font-size: clamp(5rem, 14vw, 8rem); }
+    .deskNumber { font-size: clamp(3.5rem, 9vw, 5rem); }
+}

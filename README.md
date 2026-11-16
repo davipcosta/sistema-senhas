@@ -1,6 +1,6 @@
 # Sistema de Senhas — DPE-PA
 
-Sistema de gerenciamento de filas e chamada de senhas para atendimento presencial da Defensoria Pública do Estado do Pará (DPE-PA). Roda em um único servidor Node.js na rede local e sincroniza em tempo real o totem de emissão, os guichês, o painel de TV e o acompanhamento pelo celular.
+Sistema de gerenciamento de filas e chamada de senhas para atendimento presencial da Defensoria Pública do Estado do Pará (DPE-PA). Feito em [Next.js](https://nextjs.org) (App Router) com um servidor Node.js customizado, roda na rede local e sincroniza em tempo real o totem de emissão, os guichês, o painel de TV e o acompanhamento pelo celular.
 
 ## Funcionalidades
 
@@ -20,24 +20,35 @@ A raiz (`/`) abre uma página inicial com links para todas as telas e o endereç
 | Tela | URL | Uso |
 |---|---|---|
 | Início | `/` | Escolha da tela que o dispositivo vai exibir. |
-| Totem | `/totem.html` | O cidadão escolhe o setor e o tipo de atendimento e recebe a senha com QR Code. |
-| Guichê | `/guiche.html` | O atendente escolhe o setor e o número do guichê (01–05), chama a próxima senha, rechama uma senha do histórico e pode zerar o sistema. |
-| Painel | `/painel.html` | TV da sala de espera. Mostra a senha atual e as últimas chamadas do setor escolhido e anuncia por voz. |
-| Cliente | `/cliente.html?ticket=CRIM-001` | Acompanhamento pelo celular: posição na fila, status da senha e chamada atual. Também tem um campo de busca. |
+| Totem | `/totem` | O cidadão escolhe o setor e o tipo de atendimento e recebe a senha com QR Code. |
+| Guichê | `/guiche` | O atendente escolhe o setor e o número do guichê (01–05), chama a próxima senha, rechama uma senha do histórico e pode zerar o sistema. |
+| Painel | `/painel` | TV da sala de espera. Mostra a senha atual e as últimas chamadas do setor escolhido e anuncia por voz. |
+| Cliente | `/cliente?ticket=CRIM-001` | Acompanhamento pelo celular: posição na fila, status da senha e chamada atual. Também tem um campo de busca. |
+
+Os endereços antigos (`/totem.html`, `/cliente.html?ticket=...` etc.) redirecionam para os novos, então favoritos e QR Codes já impressos continuam funcionando.
 
 > **Áudio do painel:** os navegadores bloqueiam som automático. Depois de abrir o painel, clique ou toque na tela uma vez para liberar o gongo e a voz.
 
 ## Requisitos
 
-- Node.js 18 ou superior
-- Acesso à internet no servidor para gerar áudios ainda não guardados em cache (usa o Google Translate TTS) e no totem para carregar a biblioteca de QR Code via CDN. Se o CDN falhar, o QR Code é gerado por `api.qrserver.com`.
+- Node.js 20.9 ou superior (exigência do Next.js 16)
+- Acesso à internet no servidor para gerar áudios ainda não guardados em cache (usa o Google Translate TTS). O QR Code é gerado no próprio navegador (pacote `qrcode`); só se isso falhar ele é buscado em `api.qrserver.com`.
 
 ## Instalação e execução
 
 ```bash
 npm install
+npm run build   # compila as telas (necessário antes do primeiro start e após cada atualização)
 npm start
 ```
+
+Para desenvolvimento, com recarregamento automático das telas:
+
+```bash
+npm run dev
+```
+
+> O `npm run dev` recarrega as telas e as rotas da API, mas mudanças em `server.js` e `lib/server/realtime.js` exigem reiniciar o processo.
 
 Ao iniciar, o servidor mostra o endereço de acesso na rede local:
 
@@ -66,7 +77,7 @@ Resultado: proporção de **2 preferenciais para 1 normal**, sem deixar o guich�
 
 O histórico guarda as **5 últimas chamadas de cada setor**. Rechamar uma senha coloca ela de novo no topo e repete o anúncio no painel.
 
-> `shared.js` repete essa mesma regra no navegador, como reserva para quando a API REST não responde.
+> `lib/client/store.js` repete essa mesma regra no navegador, como reserva para quando a API REST não responde.
 
 ## API
 
@@ -98,7 +109,7 @@ curl -X POST http://localhost:3000/api/tickets \
 
 ### WebSocket
 
-Conexão em `ws://<host>:<porta>/`. Ao conectar, o servidor envia `{ type: "stateUpdate", data }` e repete essa mensagem a cada mudança de estado.
+Conexão em `ws://<host>:<porta>/ws`. Ao conectar, o servidor envia `{ type: "stateUpdate", data }` e repete essa mensagem a cada mudança de estado.
 
 Mensagens aceitas (`{ type, payload }`):
 
@@ -115,32 +126,42 @@ O Socket.IO também está disponível em `/socket.io` e emite o evento `stateUpd
 
 ## Estrutura do projeto
 
+Os estilos usam [CSS Modules](https://nextjs.org/docs/app/getting-started/css#css-modules): cada tela e componente tem o seu `*.module.css` na mesma pasta (ex.: `painel/painel.module.css`, `components/Topbar.module.css`), com nomes de classe em camelCase e escopo local. Só ficam globais o `globals.css` de cada grupo de rotas, com as variáveis, o reset e as classes usadas por várias telas (`card`, `header-title`, `main-container-form`, `options-grid`, `option-btn`, `history-list`, `badge`).
+
 ```
 sistema-senhas/
-├── src/                  # Servidor (Node.js)
-│   ├── server.js         # Ponto de entrada: Express, arquivos estáticos e listen
-│   ├── config.js         # Porta, caminhos e constantes (intervalo entre chamadas, tamanho do histórico)
-│   ├── state.js          # Estado das filas e persistência em data/state.json
-│   ├── queue.js          # Regras de negócio: emitir, chamar, rechamar e zerar
-│   ├── routes.js         # Rotas REST em /api
-│   ├── realtime.js       # WebSocket nativo e Socket.IO
-│   ├── tts.js            # Síntese de voz com cache
-│   └── network.js        # Descoberta do IP da rede local
-├── public/               # Tudo o que o navegador recebe
-│   ├── index.html        # Página inicial com links para as telas
-│   ├── totem.html        # Emissão de senhas
-│   ├── guiche.html       # Controle dos guichês
-│   ├── painel.html       # Painel de TV com anúncio por voz
-│   ├── cliente.html      # Acompanhamento pelo celular
-│   ├── css/              # style.css (comum) + estilos de cada tela
-│   ├── js/               # shared.js (comum) + script de cada tela
-│   └── images/           # Logotipo da DPE-PA
+├── server.js             # Ponto de entrada: sobe o Next e o tempo real no mesmo servidor HTTP
+├── next.config.js        # Redirecionamentos das URLs antigas (.html) e ajustes do Next
+├── app/                  # Next.js App Router
+│   ├── (telas)/          # Telas fixas
+│   │   ├── globals.css   # Estilos globais (variáveis, cards, grade de opções, selos)
+│   │   ├── page.js       # Página inicial com links para as telas
+│   │   ├── totem/        # Emissão de senhas
+│   │   ├── guiche/       # Controle dos guichês
+│   │   └── painel/       # Painel de TV com anúncio por voz
+│   ├── (mobile)/         # Layout separado para o celular (com o próprio globals.css)
+│   │   └── cliente/      # Acompanhamento pelo celular
+│   └── api/              # Rotas REST (Route Handlers)
+├── components/           # Componentes comuns (topo, relógio, selo de categoria)
+├── lib/
+│   ├── server/           # Servidor (Node.js)
+│   │   ├── config.js     # Porta, caminhos e constantes (intervalo entre chamadas, tamanho do histórico)
+│   │   ├── state.js      # Estado das filas e persistência em data/state.json
+│   │   ├── queue.js      # Regras de negócio: emitir, chamar, rechamar e zerar
+│   │   ├── realtime.js   # WebSocket nativo (/ws) e Socket.IO
+│   │   ├── tts.js        # Síntese de voz com cache
+│   │   └── network.js    # Descoberta do IP da rede local
+│   └── client/
+│       └── store.js      # Estado espelhado no navegador, WebSocket e chamadas à API
+├── public/images/        # Logotipo da DPE-PA
 └── data/                 # Gerado em execução (fora do Git)
     ├── state.json        # Estado salvo
     └── audio_cache/      # MP3s de TTS em cache
 ```
 
-Só a pasta `public/` é servida pelo navegador. O código do servidor e os dados em `data/` não ficam acessíveis pela rede.
+O estado das filas fica em `globalThis` (veja `lib/server/state.js`), pois o `server.js` e as rotas da API carregam cópias separadas dos módulos de `lib/server/` no mesmo processo. O WebSocket nativo usa `/ws`, e não `/`, porque o Next encerra upgrades em caminhos que correspondem a uma página.
+
+Só `public/` e as telas compiladas pelo Next são servidas ao navegador. O código do servidor e os dados em `data/` não ficam acessíveis pela rede.
 
 ## Observações
 
